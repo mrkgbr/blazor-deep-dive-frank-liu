@@ -2,8 +2,6 @@
 
 @rendermode InteractiveServer
 
-@inject NavigationManager NavigationManager
-
 <h3>Servers</h3>
 <br />
 <br />
@@ -24,6 +22,7 @@
 </div>
 
 <br />
+
 <div class="input-group mb-3">
     <input type="text" class="form-control" placeholder="Server Servers" @bind-value="ServerFilter"
         @bind-value:event="oninput" />
@@ -31,37 +30,15 @@
 </div>
 <br />
 
-<ul>
-    <Virtualize Items="servers" Context="server">
-        <li @key="@server.ServerId">
-            @server.Name in @server.City is
-            <span style="color:@(server.IsOnline ? "green" : "red");">
-                @(server.IsOnline ? "online" : "offline")
-            </span>
-            <a class="btn btn-link" href="/servers/@server.ServerId">Edit</a>
-            &nbsp;
-            <EditForm Model="server" FormName="@($"form-server-{server.ServerId}")"
-                OnValidSubmit="@(() => { DeleteServer(server.ServerId); })">
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </EditForm>
-        </li>
-    </Virtualize>
-</ul>
+<ServerListComponent @rendermode="InteractiveServer"></ServerListComponent>
+
 <p>
     <a href="/servers/add" class="btn btn-primary">Add Server</a>
 </p>
 
-<p>
-    <button class="btn btn-secondary"
-        @onclick="@(() => servers.Insert(0, new Server {Name = "ServerA", City = "Toronto"}))">
-        Add Server
-    </button>
-</p>
-
 @code {
-    private List<Server> servers = ServersRepository.GetServers();
     private List<string> cities = CitiesRepository.GetCities();
-    private string selectedCity = string.Empty;
+    private string selectedCity = "Toronto";
     private string _serverFiler = "";
     private string ServerFilter
     {
@@ -69,36 +46,20 @@
         set
         {
             _serverFiler = value;
-            servers = ServersRepository.SearchServers(_serverFiler);
+            @* servers = ServersRepository.SearchServers(_serverFiler); *@
         }
     }
-    private void DeleteServer(int serverId)
-    {
-        if (serverId > 0)
-        {
-            ServersRepository.DeleteServer(serverId);
-            NavigationManager.Refresh();
-        }
-    }
+
 
     private void SelectCity(string cityName)
     {
-        if (cityName == selectedCity)
-        {
-            servers = ServersRepository.GetServers();
-            selectedCity = string.Empty;
-        }
-        else
-        {
-            selectedCity = cityName;
-            servers = ServersRepository.GetServersByCity(selectedCity);
-        }
-
+        selectedCity = cityName;
+        @* servers = ServersRepository.GetServersByCity(selectedCity); *@
     }
 
     private void HandleSearch()
     {
-        servers = ServersRepository.SearchServers(ServerFilter);
+        @* servers = ServersRepository.SearchServers(ServerFilter); *@
         selectedCity = string.Empty;
     }
 }
