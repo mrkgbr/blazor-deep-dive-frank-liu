@@ -1,0 +1,42 @@
+﻿@page "/todolist"
+@rendermode InteractiveServer
+
+<h3 class="mb-3">To Do</h3>
+<button class="btn btn-primary mb-3" @onclick="AddTask">Add Task</button>
+@if (items != null)
+{
+    <ul>
+        @foreach (var item in items)
+        {
+            <li class="my-1 row align-items-center" @key="item.Id">
+                <div class="me-2 col-1 text-center" style="width: 30px;">
+                    <input type="checkbox" checked="@item.IsCompleted" @bind-value="item.IsCompleted"
+                        class="form-check-input" />
+                </div>
+                <div class="col">
+                    @if (item.IsCompleted)
+                    {
+                        <input type="text" @bind-value="item.Name" class="form-control border-0 text-decoration-line-through" disabled/>
+                    }
+                    else
+                    {
+                        <input type="text" @bind-value="item.Name" class="form-control border-0" />
+                    }
+                </div>
+                @if (item.IsCompleted)
+                {
+                    <div class="col">Completed at: @item.DateCompleted.ToLongDateString() </div>
+                }
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    private List<ToDoItem> items = ToDoItemsRepository.GetItems();
+    private void AddTask()
+    {
+        ToDoItemsRepository.AddItem(new ToDoItem { Name = "New Task" });
+        items = ToDoItemsRepository.GetItems();
+    }
+}
