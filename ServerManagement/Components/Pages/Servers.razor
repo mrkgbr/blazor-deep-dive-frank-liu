@@ -4,9 +4,9 @@
 
 <h3>Servers</h3>
 <br />
-<CityListComponent SelectCityCallback="HandleCitySelection" />
+<CityListComponent @ref="cityListComponent" SelectCityCallback="HandleCitySelection" />
 <br />
-<SearchComponent HandleSearchCallback="HandleSearch"></SearchComponent>
+<SearchComponent @ref="searchComponent" HandleSearchCallback="HandleSearch"></SearchComponent>
 <br />
 <ServerListComponent @rendermode="InteractiveServer" CityName="@_selectedCity" SearchFilter="@_searchFilter"></ServerListComponent>
 <p>
@@ -17,14 +17,19 @@
     private string _selectedCity = "Toronto";
     private string _searchFilter = "";
 
+    private CityListComponent? cityListComponent;
+    private SearchComponent? searchComponent;
+
     private void HandleSearch(string searchFilter)
     {
         _searchFilter = searchFilter;
+        cityListComponent?.ClearSelection();
     }
 
     private void HandleCitySelection(string cityName)
     {
         _selectedCity = cityName;
         _searchFilter = string.Empty;
+        searchComponent?.ClearFilter();
     }
 }

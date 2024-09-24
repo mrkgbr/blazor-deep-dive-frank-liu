@@ -11,6 +11,10 @@
 }
 
 @code {
+    public void ClearSelection()
+    {
+        selectedCity = string.Empty;
+    }
     private List<string> cities = CitiesRepository.GetCities();
     private string selectedCity = "Toronto";
 

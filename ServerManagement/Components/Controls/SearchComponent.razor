@@ -8,6 +8,11 @@
 @code {
     private string serverFilter = "";
 
+    public void ClearFilter()
+    {
+        serverFilter = string.Empty;
+    }
+
     [Parameter]
     public EventCallback<string> HandleSearchCallback { get; set; }
 
