@@ -9,6 +9,16 @@
         </span>
         <a class="btn btn-link" href="/servers/@Server.ServerId">Edit</a>
         &nbsp;
+        @if (Server.IsOnline)
+        {
+            <button type="button" class="btn btn-outline-danger" @onclick="@(() => {Server.IsOnline = false;})">Turn
+                off</button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-outline-success" @onclick="@(() => {Server.IsOnline = true;})">Turn on</button>
+        }
+        &nbsp;
         <EditForm Model="Server" FormName="@($"form-server-{Server.ServerId}")"
             OnValidSubmit="@(() => { DeleteServer(Server.ServerId); })">
             <button type="submit" class="btn btn-danger">Delete</button>
@@ -29,3 +39,9 @@
         }
     }
 }
+
+using System.Diagnostics.Eventing.Reader;
+
+#line default
+#line hidden
+#nullable disable
