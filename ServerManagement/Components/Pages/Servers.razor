@@ -5,21 +5,7 @@
 <h3>Servers</h3>
 <br />
 <br />
-<div class="container-fluid text-center">
-    <div class="row w-50">
-        @foreach (string city in cities)
-        {
-            <div class="col m-1">
-                <div class="card @(selectedCity == city ? "border-primary" : string.Empty)">
-                    <img src="@($"/images/{city}.png")" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <button type="button" class="btn btn-primary" @onclick="@(() => SelectCity(city))">@city</button>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-</div>
+<CityListComponent />
 
 <br />
 
@@ -30,15 +16,13 @@
 </div>
 <br />
 
-<ServerListComponent @rendermode="InteractiveServer" CityName="@selectedCity"></ServerListComponent>
+<ServerListComponent @rendermode="InteractiveServer" CityName="Toronto"></ServerListComponent>
 
 <p>
     <a href="/servers/add" class="btn btn-primary">Add Server</a>
 </p>
 
 @code {
-    private List<string> cities = CitiesRepository.GetCities();
-    private string selectedCity = "Toronto";
     private string _serverFiler = "";
     private string ServerFilter
     {
@@ -50,16 +34,9 @@
         }
     }
 
-
-    private void SelectCity(string cityName)
-    {
-        selectedCity = cityName;
-        @* servers = ServersRepository.GetServersByCity(selectedCity); *@
-    }
-
     private void HandleSearch()
     {
         @* servers = ServersRepository.SearchServers(ServerFilter); *@
-        selectedCity = string.Empty;
+        @* selectedCity = string.Empty; *@
     }
 }
