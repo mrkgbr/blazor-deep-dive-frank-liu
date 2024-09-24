@@ -4,45 +4,27 @@
 
 <h3>Servers</h3>
 <br />
-<br />
 <CityListComponent SelectCityCallback="HandleCitySelection" />
-
 <br />
-
-<div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Server Servers" @bind-value="ServerFilter"
-        @bind-value:event="oninput" />
-    <button class="btn btn-outline-secondary" type="button" id="button-search" @onclick="HandleSearch">Search</button>
-</div>
+<SearchComponent HandleSearchCallback="HandleSearch"></SearchComponent>
 <br />
-
-<ServerListComponent @rendermode="InteractiveServer" CityName="@selectedCity"></ServerListComponent>
-
+<ServerListComponent @rendermode="InteractiveServer" CityName="@_selectedCity" SearchFilter="@_searchFilter"></ServerListComponent>
 <p>
     <a href="/servers/add" class="btn btn-primary">Add Server</a>
 </p>
 
 @code {
-    private string selectedCity = "Toronto";
-    private string _serverFiler = "";
-    private string ServerFilter
-    {
-        get => _serverFiler;
-        set
-        {
-            _serverFiler = value;
-            @* servers = ServersRepository.SearchServers(_serverFiler); *@
-        }
-    }
+    private string _selectedCity = "Toronto";
+    private string _searchFilter = "";
 
-    private void HandleSearch()
+    private void HandleSearch(string searchFilter)
     {
-        @* servers = ServersRepository.SearchServers(ServerFilter); *@
-        @* selectedCity = string.Empty; *@
+        _searchFilter = searchFilter;
     }
 
     private void HandleCitySelection(string cityName)
     {
-        selectedCity = cityName;
+        _selectedCity = cityName;
+        _searchFilter = string.Empty;
     }
 }
